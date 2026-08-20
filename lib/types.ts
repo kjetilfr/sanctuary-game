@@ -1,8 +1,12 @@
 // lib/types.ts
 
+export type GameMode = 'coop' | 'versus'
+export type ItemType = 'food' | 'water' | 'medkit' | 'ammo' | 'scrap'
+
 export interface Game {
   id: string;
   code: string;
+  mode: GameMode;
   phase: 'Day' | 'Night';
   nightCount: number;
   status: 'waiting' | 'playing' | 'ended';
@@ -14,7 +18,9 @@ export interface Player {
   gameId: string;
   name: string;
   role: string | null;
-  isHost: number; // 0 or 1
+  isHost: number;
+  health: number;
+  isAlive: number;
   createdAt: string;
 }
 
@@ -23,8 +29,8 @@ export interface Citizen {
   gameId: string;
   citizenNumber: number;
   health: number;
-  hasFood: number; // 0 or 1
-  hasWater: number; // 0 or 1
+  hasFood: number;
+  hasWater: number;
 }
 
 export interface Resource {
@@ -37,10 +43,19 @@ export interface Resource {
   scrap: number;
 }
 
-// Response types for getGameState
+export interface InventoryItem {
+  id: string;
+  gameId: string;
+  playerId: string;
+  itemType: ItemType;
+  label: string;
+  icon: string;
+}
+
 export interface GameState {
   id: string;
   code: string;
+  mode: GameMode;
   phase: 'Day' | 'Night';
   nightCount: number;
   status: 'waiting' | 'playing' | 'ended';
@@ -48,4 +63,6 @@ export interface GameState {
   players: Player[];
   citizens: Citizen[];
   resources: Resource;
+  inventory: InventoryItem[];
+  locationLootCounts: Record<string, number>;
 }
